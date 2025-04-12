@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const app = express();
@@ -9,6 +10,16 @@ const dotenv = require("dotenv");
 dotenv.config({
     path: path.join(__dirname, `${process.env.APP_ENV}.env`)
 })
+
+// Ensure required folders exist
+const folders = ['uploads', 'qr'];
+
+folders.forEach(folder => {
+    const dir = path.join(__dirname, folder);
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir);
+    }
+});
 
 const PORT = process.env.PORT;
 const uploadRoute = require('./routes/upload');
